@@ -1,5 +1,6 @@
 package com.example.mini_jira.util;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.mini_jira.entity.ProjectEntity;
@@ -14,10 +15,12 @@ public class DataSeeder {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataSeeder(ProjectRepository projectRepository, UserRepository userRepository){
+    public DataSeeder(ProjectRepository projectRepository, UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -32,7 +35,7 @@ public class DataSeeder {
             UserEntity testUser = new UserEntity();
             testUser.setUsername("Kyle");
             testUser.setRole("QA");
-            testUser.setPassword("QA@123");
+            testUser.setPassword(passwordEncoder.encode("QA@123"));
             userRepository.save(testUser);
         }
     }
