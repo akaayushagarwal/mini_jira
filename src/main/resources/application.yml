@@ -4,3 +4,6 @@ spring:
 
 jwt:
     secret: ${JWT_SECRET}
+
+ticket:
+    statuses: OPEN, IN_PROGRESS, RESOLVED

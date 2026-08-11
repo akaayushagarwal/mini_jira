@@ -1,7 +1,10 @@
 package com.example.mini_jira.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import com.example.mini_jira.dto.TicketRequestDTO;
 import com.example.mini_jira.entity.ProjectEntity;
 import com.example.mini_jira.entity.TicketEntity;
 import com.example.mini_jira.entity.UserEntity;
+import com.example.mini_jira.exception.InvalidStatusException;
 import com.example.mini_jira.exception.ResourceNotFoundException;
 import com.example.mini_jira.repository.ProjectRepository;
 import com.example.mini_jira.repository.TicketRepository;
@@ -20,6 +24,9 @@ import jakarta.transaction.Transactional;
 public class TicketService {
 
     private static final Logger log = LoggerFactory.getLogger(TicketService.class);
+
+    @Value("${ticket.statuses}")
+    private List<String> validStatuses;
 
     private final TicketRepository ticketRepository;
     private final ProjectRepository projectRepository;
@@ -62,5 +69,59 @@ public class TicketService {
 
         return "Ticket is saved successfully";
 
+    }
+
+    @Transactional
+    public String assignTicket(Long ticketId, String devUserName){
+
+        log.info("Request recieved for Ticket:AssignDev for Ticket Id: {}", ticketId);
+
+        TicketEntity ticketEntity = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new ResourceNotFoundException("ticketId", "Ticket Not Found"));
+
+        log.info("Ticket Title: {} Found", ticketEntity.getTitle());
+
+        UserEntity developer = userRepository.findByUsername(devUserName)
+            .orElseThrow(() -> new ResourceNotFoundException("devUserName", "Developer Not Found"));
+        
+        log.info("User Username: {} Found", developer.getUsername());
+
+        String devRole = developer.getRole();
+
+        if(!(devRole.equals("DEV") || devRole.equals("ADMIN"))){
+            log.warn("User.Role is Not Admin or Developer throwing Error");
+            throw new ResourceNotFoundException("devUserName", "Only developer and admins can be assigned");
+        }
+
+        ticketEntity.setAssignee(developer);
+        ticketRepository.save(ticketEntity);
+
+        log.info("Ticket Title: {} has assigned to User: {}", ticketEntity.getTitle(), developer.getUsername());
+
+        return "Developer Assigned Sucessfully";
+        
+    }
+
+    @Transactional
+    public String updateTicketStatus(Long ticketId, String newStatus){
+
+        log.info("Request to Update Ticket.Status : {}", newStatus);
+
+        TicketEntity ticketEntity = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new ResourceNotFoundException("tickedId", "Ticket Not Found"));
+
+        log.info("Ticket Title: {} Found", ticketEntity.getTitle());
+        
+        if(!validStatuses.contains(newStatus.toUpperCase())){
+            log.warn("Status {} Is Invalid", newStatus);
+            throw new InvalidStatusException("Status", "Status is Invalid");
+        }
+
+        ticketEntity.setstatus(newStatus);
+        ticketRepository.save(ticketEntity);
+
+        log.info("Ticket Title: {} Status Updated To: {}", ticketEntity.getTitle(), ticketEntity.getStatus());
+
+        return "Status Updated";
     }
 }

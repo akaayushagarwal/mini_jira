@@ -34,7 +34,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/projects").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/projects/**").authenticated()
 
-                .requestMatchers("/tickets/**").hasAuthority("QA")
+                .requestMatchers(HttpMethod.POST, "/tickets").hasAnyAuthority("QA", "ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/tickets/*/assign/**").hasAnyAuthority("DEV", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/tickets/*/status").hasAnyAuthority("QA", "DEV", "ADMIN")
 
                 .requestMatchers("/actuator/**").hasAuthority("ADMIN")
                 
