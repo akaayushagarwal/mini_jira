@@ -2,6 +2,7 @@ package com.example.mini_jira.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,8 +27,16 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
+
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/projects").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/projects/**").authenticated()
+
                 .requestMatchers("/tickets/**").hasAuthority("QA")
                 .requestMatchers("/actuator/**").hasAuthority("ADMIN")
+                
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
