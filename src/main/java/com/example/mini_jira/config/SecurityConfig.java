@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/projects/**").authenticated()
 
                 .requestMatchers("/tickets/**").hasAuthority("QA")
+
                 .requestMatchers("/actuator/**").hasAuthority("ADMIN")
                 
                 .anyRequest().authenticated()
