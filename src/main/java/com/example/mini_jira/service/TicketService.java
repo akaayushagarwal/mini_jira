@@ -1,5 +1,6 @@
 package com.example.mini_jira.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.mini_jira.dto.TicketRequestDTO;
@@ -32,7 +33,9 @@ public class TicketService {
         ProjectEntity projectEntity = projectRepository.findById(dto.projectId())
             .orElseThrow(() -> new ResourceNotFoundException("projectId", "Project Not Found"));
 
-        UserEntity reporterEntity = userRepository.findById(dto.reporterId())
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        UserEntity reporterEntity = userRepository.findByUsername(username)
             .orElseThrow(() -> new ResourceNotFoundException("reporterId", "Reporter Not Found"));
 
         TicketEntity ticketEntity = new TicketEntity();

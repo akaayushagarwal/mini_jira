@@ -13,9 +13,6 @@ public record TicketRequestDTO(
     String description,
 
     @NotNull(message = "Project Id can not be null")
-    Long projectId,
-
-    @NotNull(message = "Reporter Id can not be null")
-    Long reporterId
+    Long projectId
 
 ) {}
