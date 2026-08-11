@@ -79,7 +79,7 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Unified Testing Starter (Includes JUnit 5, Mockito, AssertJ, and MockMvc) -->
+		<!-- Testing Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -89,7 +89,7 @@
 
 	<build>
 		<plugins>
-			<!-- Handles packaging your application into an executable JAR file -->
+			<!-- Handles Packaging {Application -> Executable JAR file} -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

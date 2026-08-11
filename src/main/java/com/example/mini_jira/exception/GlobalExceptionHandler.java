@@ -3,6 +3,8 @@ package com.example.mini_jira.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,8 +18,13 @@ import io.jsonwebtoken.JwtException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> resNotFoundEx(ResourceNotFoundException ex){
+
+        log.warn("Resource Not found Field: {}", ex.getFieldName());
+
         Map<String, String> response = new HashMap<>();
 
         response.put(ex.getFieldName(), ex.getMessage());
@@ -35,6 +42,10 @@ public class GlobalExceptionHandler {
 
         ex.getBindingResult().getFieldErrors().forEach(error ->
             errors.put(error.getField(), error.getDefaultMessage()));
+
+        errors
+            .forEach((field,error) ->
+                log.warn("Validation Error, Field: {}, Message: {}", field, error));
 
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)

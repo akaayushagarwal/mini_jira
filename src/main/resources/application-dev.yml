@@ -12,3 +12,20 @@ spring:
 
         show-sql: false
         open-in-view: false
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health, metrics, info
+    endpoint:
+        health:
+            show-details: always
+
+logging:
+    level:
+        root: INFO
+        '[com.example.mini_jira]': DEBUG
+        '[org.hibernate.sql]': DEBUG
+    file: 
+        name: mini-jira-logs.log

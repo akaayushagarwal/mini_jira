@@ -37,6 +37,12 @@ public class DataSeeder {
             testUser.setRole("QA");
             testUser.setPassword(passwordEncoder.encode("QA@123"));
             userRepository.save(testUser);
+
+            UserEntity adminUser = new UserEntity();
+            adminUser.setUsername("David");
+            adminUser.setRole("ADMIN");
+            adminUser.setPassword(passwordEncoder.encode("ADMIN@123"));
+            userRepository.save(adminUser);
         }
     }
 
