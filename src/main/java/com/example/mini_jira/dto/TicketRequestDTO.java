@@ -9,6 +9,7 @@ public record TicketRequestDTO(
     @NotBlank(message = "Title can not be blank")
     String title,
 
+    @NotBlank(message = "Description can not be blank")
     @Size(max = 499, message = "Description size should be <500")
     String description,
 

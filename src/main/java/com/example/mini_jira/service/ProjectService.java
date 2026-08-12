@@ -5,13 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mini_jira.dto.ProjectRequestDTO;
 import com.example.mini_jira.dto.ProjectResponseDTO;
 import com.example.mini_jira.entity.ProjectEntity;
 import com.example.mini_jira.repository.ProjectRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class ProjectService {
@@ -40,7 +40,7 @@ public class ProjectService {
         return "Project is successfully created";
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ProjectResponseDTO> fetchAllProjects(){
 
         log.info("Fetching All Projects...");

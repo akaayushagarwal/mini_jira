@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mini_jira.dto.CommentRequestDTO;
 import com.example.mini_jira.dto.CommentResponseDTO;
@@ -17,7 +18,6 @@ import com.example.mini_jira.repository.CommentRepository;
 import com.example.mini_jira.repository.TicketRepository;
 import com.example.mini_jira.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class CommentService {
@@ -64,7 +64,7 @@ public class CommentService {
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CommentResponseDTO> fetchCommentsByTicket(Long ticketId){
 
         log.info("Request recieved for find.Comments associated with Ticket Id: {}", ticketId);

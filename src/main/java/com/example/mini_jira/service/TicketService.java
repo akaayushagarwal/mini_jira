@@ -5,10 +5,15 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mini_jira.dto.TicketRequestDTO;
+import com.example.mini_jira.dto.TicketResponseDTO;
 import com.example.mini_jira.entity.ProjectEntity;
 import com.example.mini_jira.entity.TicketEntity;
 import com.example.mini_jira.entity.UserEntity;
@@ -18,7 +23,6 @@ import com.example.mini_jira.repository.ProjectRepository;
 import com.example.mini_jira.repository.TicketRepository;
 import com.example.mini_jira.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class TicketService {
@@ -123,5 +127,20 @@ public class TicketService {
         log.info("Ticket Title: {} Status Updated To: {}", ticketEntity.getTitle(), ticketEntity.getStatus());
 
         return "Status Updated";
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<TicketResponseDTO> fetchTicketsByProject(Long projectId, int pageNumber, int pageSize){
+
+        if(!projectRepository.existsById(projectId)){
+            throw new ResourceNotFoundException("projectId", "Project Not Found");
+        }
+        
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Slice<TicketEntity> ticketPage = ticketRepository.findByProjectId(projectId, pageable);
+
+        return ticketPage
+            .map(TicketResponseDTO::fromEntity);
     }
 }

@@ -5,12 +5,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mini_jira.dto.TicketRequestDTO;
+import com.example.mini_jira.dto.TicketResponseDTO;
 import com.example.mini_jira.service.TicketService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +55,20 @@ public class TicketController {
     public ResponseEntity<String> updateStatus(@PathVariable Long id, @RequestParam String status){
 
         String response = ticketService.updateTicketStatus(id, status);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<Slice<TicketResponseDTO>> getTicketsForProject(
+        @PathVariable Long projectId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ){
+
+        Slice<TicketResponseDTO> response = ticketService.fetchTicketsByProject(projectId, page, size);
 
         return ResponseEntity
             .status(HttpStatus.OK)
