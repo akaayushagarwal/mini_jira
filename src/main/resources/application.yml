@@ -7,3 +7,6 @@ jwt:
 
 ticket:
     statuses: OPEN, IN_PROGRESS, RESOLVED
+
+user:
+    roles: ADMIN, DEV, QA

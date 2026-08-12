@@ -15,7 +15,7 @@ public record ProjectResponseDTO(
         return new ProjectResponseDTO(
             entity.getId(),
             entity.getName(),
-            entity.getDescription()
+            entity.getDescription() != null ? entity.getDescription() : null
         );
     }
 }

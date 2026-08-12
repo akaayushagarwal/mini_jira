@@ -11,4 +11,6 @@ import com.example.mini_jira.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
     Optional<UserEntity> findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

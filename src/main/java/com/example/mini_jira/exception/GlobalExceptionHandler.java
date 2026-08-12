@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -47,6 +48,23 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(response);
+    }
+
+    @ExceptionHandler(UserAlreadyPresentException.class)
+    public ResponseEntity<String> handleDuplicateUser(UserAlreadyPresentException ex){
+
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ex.getMessage());
+
+    }
+
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<String> handleInvalidRole(InvalidRoleException ex){
+
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
