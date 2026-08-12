@@ -121,7 +121,7 @@ public class TicketService {
             throw new InvalidStatusException("Status", "Status is Invalid");
         }
 
-        ticketEntity.setstatus(newStatus);
+        ticketEntity.setstatus(newStatus.toUpperCase());
         ticketRepository.save(ticketEntity);
 
         log.info("Ticket Title: {} Status Updated To: {}", ticketEntity.getTitle(), ticketEntity.getStatus());

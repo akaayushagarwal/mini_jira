@@ -35,7 +35,7 @@ public class UserService {
             throw new UserAlreadyPresentException();
         }
 
-        if(!validRoles.contains(dto.role())){
+        if(!validRoles.contains(dto.role().toUpperCase())){
             throw new InvalidRoleException();
         }
 
