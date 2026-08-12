@@ -11,5 +11,8 @@ import com.example.mini_jira.entity.TicketEntity;
 public interface TicketRepository extends JpaRepository<TicketEntity, Long>{
 
     Slice<TicketEntity> findByProjectId(Long projectId, Pageable pageable);
+    Slice<TicketEntity> findByAssigneeUsername(String assigneeUserName, Pageable pageable);
+    Slice<TicketEntity> findByReporterUsername(String reporterUserName, Pageable pageable);
+
 
 }

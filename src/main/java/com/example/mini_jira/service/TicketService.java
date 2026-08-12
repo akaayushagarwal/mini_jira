@@ -143,4 +143,58 @@ public class TicketService {
         return ticketPage
             .map(TicketResponseDTO::fromEntity);
     }
+
+    @Transactional(readOnly = true)
+    public Slice<TicketResponseDTO> fetchTicketsByAssignee(String assigneeUserName, int pageNumber, int pageSize){
+
+        UserEntity assigneeUser = userRepository.findByUsername(assigneeUserName)
+            .orElseThrow(() -> new ResourceNotFoundException("assigneeUserName", "Assignee Not Found"));
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Slice<TicketEntity> ticketPage = ticketRepository.findByAssigneeUsername(assigneeUser.getUsername(), pageable);
+
+        return ticketPage
+            .map(TicketResponseDTO::fromEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<TicketResponseDTO> fetchAssignedTickets(int pageNumber, int pageSize){
+
+        String usernameCurrent = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Slice<TicketEntity> ticketPage = ticketRepository.findByAssigneeUsername(usernameCurrent, pageable);
+
+        return ticketPage
+            .map(TicketResponseDTO::fromEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<TicketResponseDTO> fetchTicketsByReporter(String reporterUserName, int pageNumber, int pageSize){
+
+        UserEntity reporterUser = userRepository.findByUsername(reporterUserName)
+            .orElseThrow(() -> new ResourceNotFoundException("reporterUserName", "Reporter Not Found"));
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Slice<TicketEntity> ticketPage = ticketRepository.findByReporterUsername(reporterUser.getUsername(), pageable);
+
+        return ticketPage
+            .map(TicketResponseDTO::fromEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<TicketResponseDTO> fetchReportedTickets(int pageNumber, int pageSize){
+
+        String usernameCurrent = SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Slice<TicketEntity> ticketPage = ticketRepository.findByReporterUsername(usernameCurrent, pageable);
+
+        return ticketPage
+            .map(TicketResponseDTO::fromEntity);
+    }
 }

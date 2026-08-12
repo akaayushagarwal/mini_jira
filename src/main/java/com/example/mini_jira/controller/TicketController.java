@@ -74,5 +74,59 @@ public class TicketController {
             .status(HttpStatus.OK)
             .body(response);
     }
+
+    @GetMapping("/assignee/{assigneeUsername}")
+    public ResponseEntity<Slice<TicketResponseDTO>> getTicketsForAssignee(
+        @PathVariable String assigneeUsername,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ){
+
+        Slice<TicketResponseDTO> response = ticketService.fetchTicketsByAssignee(assigneeUsername, page, size);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
+
+    @GetMapping("/myAssigned")
+    public ResponseEntity<Slice<TicketResponseDTO>> getMyAssignedTickets(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ){
+
+        Slice<TicketResponseDTO> response = ticketService.fetchAssignedTickets(page, size);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
+
+    @GetMapping("/reporter/{reporterUsername}")
+    public ResponseEntity<Slice<TicketResponseDTO>> getTicketsForReporter(
+        @PathVariable String reporterUsername,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ){
+
+        Slice<TicketResponseDTO> response = ticketService.fetchTicketsByReporter(reporterUsername, page, size);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
+
+    @GetMapping("/myReported")
+    public ResponseEntity<Slice<TicketResponseDTO>> getMyReportedTickets(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ){
+
+        Slice<TicketResponseDTO> response = ticketService.fetchReportedTickets(page, size);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(response);
+    }
     
 }
