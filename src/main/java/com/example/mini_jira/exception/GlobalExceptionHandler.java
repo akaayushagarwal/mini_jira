@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
