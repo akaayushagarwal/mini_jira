@@ -1,5 +1,7 @@
 package com.example.mini_jira.dto;
 
+import java.io.Serializable;
+
 import com.example.mini_jira.entity.ProjectEntity;
 
 public record ProjectResponseDTO(
@@ -10,7 +12,8 @@ public record ProjectResponseDTO(
     
     String description
 
-) {
+) implements Serializable
+{
     public static ProjectResponseDTO fromEntity(ProjectEntity entity){
         return new ProjectResponseDTO(
             entity.getId(),
