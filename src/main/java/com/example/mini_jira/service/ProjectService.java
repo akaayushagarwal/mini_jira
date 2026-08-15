@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class ProjectService {
     }
 
     @Transactional
+    @CacheEvict(value = "projectCache", allEntries = true)
     public String createProject(ProjectRequestDTO dto){
 
         log.info("Request recieved for Project.Creation name: {}", dto.name());
@@ -41,6 +44,7 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "projectCache")
     public List<ProjectResponseDTO> fetchAllProjects(){
 
         log.info("Fetching All Projects...");
