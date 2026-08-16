@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -43,6 +45,7 @@ public class TicketService {
     }
 
     @Transactional
+    @CacheEvict(value = {"ticketsByProject", "ticketsByReporter"}, allEntries = true)
     public String createTicket(TicketRequestDTO dto){
 
         log.info("Request recieved for Ticket.Creation title:{}", dto.title());
@@ -76,6 +79,7 @@ public class TicketService {
     }
 
     @Transactional
+    @CacheEvict(value = "ticketsByAssignee", allEntries = true)
     public String assignTicket(Long ticketId, String devUserName){
 
         log.info("Request recieved for Ticket:AssignDev for Ticket Id: {}", ticketId);
@@ -107,6 +111,7 @@ public class TicketService {
     }
 
     @Transactional
+    @CacheEvict(value = {"ticketsByProject", "ticketsByAssignee", "ticketsByReporter"}, allEntries = true)
     public String updateTicketStatus(Long ticketId, String newStatus){
 
         log.info("Request to Update Ticket.Status : {}", newStatus);
@@ -130,6 +135,7 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "ticketsByProject", key = "#projectId + '-' + #pageNumber + '-' + #pageSize")
     public Slice<TicketResponseDTO> fetchTicketsByProject(Long projectId, int pageNumber, int pageSize){
 
         if(!projectRepository.existsById(projectId)){
@@ -145,6 +151,7 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "ticketsByAssignee", key = "#assigneeUserName + '-' + #pageNumber + '-' + #pageSize")
     public Slice<TicketResponseDTO> fetchTicketsByAssignee(String assigneeUserName, int pageNumber, int pageSize){
 
         UserEntity assigneeUser = userRepository.findByUsername(assigneeUserName)
@@ -172,6 +179,7 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "ticketsByReporter", key = "#reporterUserName + '-' + #pageNumber + '-' + #pageSize")
     public Slice<TicketResponseDTO> fetchTicketsByReporter(String reporterUserName, int pageNumber, int pageSize){
 
         UserEntity reporterUser = userRepository.findByUsername(reporterUserName)
