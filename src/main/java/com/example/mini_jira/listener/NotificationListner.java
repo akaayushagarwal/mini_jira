@@ -27,8 +27,8 @@ public class NotificationListner {
 
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("rabbitmq.minijira@gmail.com"); // Must match MAIL_USERNAME
-            message.setTo("rabbitmq.minijira@gmail.com");   // Send to yourself for testing!
+            message.setFrom("rabbitmq.minijira@gmail.com"); 
+            message.setTo(event.email());   
             message.setSubject("URGENT: Mini-Jira Ticket Update - " + event.ticketName());
             
             String emailBody = String.format("""

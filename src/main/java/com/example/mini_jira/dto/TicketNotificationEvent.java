@@ -7,14 +7,16 @@ public record TicketNotificationEvent(
     Long ticketId,
     String ticketName,
     String status,
-    String message
+    String message,
+    String email
 ) {
-    public static TicketNotificationEvent fromEntity(TicketEntity entity){
+    public static TicketNotificationEvent fromEntity(TicketEntity entity, String email){
         return new TicketNotificationEvent(
             entity.getId(),
             entity.getTitle(),
             entity.getStatus(),
-            "A new critical bug ticket has been created and requires immediate attention."
+            "A new critical bug ticket has been created and requires immediate attention.",
+            email
         );
     }
 }

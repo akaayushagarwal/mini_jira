@@ -81,7 +81,7 @@ public class TicketService {
 
         log.info("Ticket Title:{} is inserted into database Status: {}", ticketEntity.getTitle(), ticketEntity.getStatus());
 
-        TicketNotificationEvent event = TicketNotificationEvent.fromEntity(ticketEntity);
+        TicketNotificationEvent event = TicketNotificationEvent.fromEntity(ticketEntity, reporterEntity.getEmail());
 
         rabbitTemplate.convertAndSend(
             RabbitMQConfig.TICKET_EXCHANGE,
