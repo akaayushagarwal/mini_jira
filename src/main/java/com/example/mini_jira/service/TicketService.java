@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.mini_jira.config.RabbitMQConfig;
+import com.example.mini_jira.dto.TicketNotificationEvent;
 import com.example.mini_jira.dto.TicketRequestDTO;
 import com.example.mini_jira.dto.TicketResponseDTO;
 import com.example.mini_jira.entity.ProjectEntity;
@@ -38,10 +41,14 @@ public class TicketService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
 
-    public TicketService(TicketRepository ticketRepository, ProjectRepository projectRepository, UserRepository userRepository){
+    private final RabbitTemplate rabbitTemplate;
+
+    public TicketService(TicketRepository ticketRepository, ProjectRepository projectRepository, UserRepository userRepository, RabbitTemplate rabbitTemplate){
         this.ticketRepository = ticketRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Transactional
@@ -73,6 +80,16 @@ public class TicketService {
         ticketRepository.save(ticketEntity);
 
         log.info("Ticket Title:{} is inserted into database Status: {}", ticketEntity.getTitle(), ticketEntity.getStatus());
+
+        TicketNotificationEvent event = TicketNotificationEvent.fromEntity(ticketEntity);
+
+        rabbitTemplate.convertAndSend(
+            RabbitMQConfig.TICKET_EXCHANGE,
+            RabbitMQConfig.ROUTING_KEY,
+            event
+        );
+
+        log.info("Notification event published to RabbitMQ for Ticket ID: {}", ticketEntity.getId());
 
         return "Ticket is saved successfully";
 

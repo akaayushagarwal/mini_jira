@@ -83,6 +83,12 @@
     		<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
 
+		<!-- SpringBoot AMQP -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
 		<!-- Monitoring & Metrics -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -101,6 +107,12 @@
     		<groupId>org.springdoc</groupId>
     		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
     		<version>3.1.0</version>
+		</dependency>
+
+		<!-- Mail Starter -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		
 	</dependencies>
