@@ -36,18 +36,21 @@ public class DataSeeder {
             testUser.setUsername("Kyle");
             testUser.setRole("QA");
             testUser.setPassword(passwordEncoder.encode("QA@123"));
+            testUser.setEmail("rabbitmq.minijira@gmail.com");
             userRepository.save(testUser);
 
             UserEntity adminUser = new UserEntity();
             adminUser.setUsername("David");
             adminUser.setRole("ADMIN");
             adminUser.setPassword(passwordEncoder.encode("ADMIN@123"));
+            adminUser.setEmail("rabbitmq.minijira@gmail.com");
             userRepository.save(adminUser);
 
             UserEntity devUser = new UserEntity();
             devUser.setUsername("Ceser");
             devUser.setRole("DEV");
             devUser.setPassword(passwordEncoder.encode("DEV@123"));
+            devUser.setEmail("rabbitmq.minijira@gmail.com");
             userRepository.save(devUser);
         }
     }

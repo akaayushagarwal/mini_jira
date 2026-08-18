@@ -22,6 +22,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
+    @Column(nullable = false)
+    private String email;
+
     public UserEntity(){}
 
     public Long getId(){return id;}
@@ -34,5 +37,8 @@ public class UserEntity {
 
     public String getRole(){return role;}
     public void setRole(String role){this.role = role;}
+
+    public String getEmail(){return email;}
+    public void setEmail(String email){this.email = email;}
 
 }

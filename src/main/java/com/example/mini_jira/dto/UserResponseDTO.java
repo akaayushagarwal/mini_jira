@@ -6,7 +6,8 @@ public record UserResponseDTO(
 
     Long id,
     String username,
-    String role
+    String role,
+    String email
 
 ) {
 
@@ -14,7 +15,8 @@ public record UserResponseDTO(
         return new UserResponseDTO(
             entity.getId(),
             entity.getUsername(),
-            entity.getRole()
+            entity.getRole(),
+            entity.getEmail()
         );
     }
 

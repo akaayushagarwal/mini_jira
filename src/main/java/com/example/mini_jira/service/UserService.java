@@ -43,6 +43,7 @@ public class UserService {
         userEntity.setUsername(dto.username());
         userEntity.setPassword(passwordEncoder.encode(dto.password()));
         userEntity.setRole(dto.role().toUpperCase());
+        userEntity.setEmail(dto.email());
         
         userRepository.save(userEntity);
 

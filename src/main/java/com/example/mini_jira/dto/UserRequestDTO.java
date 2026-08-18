@@ -1,5 +1,6 @@
 package com.example.mini_jira.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record UserRequestDTO(
@@ -11,7 +12,10 @@ public record UserRequestDTO(
     String password,
 
     @NotBlank(message = "Role can not be blank")
-    String role
+    String role,
+
+    @Email(message = "Email Invalid")
+    String email
 
 ) {
 
