@@ -2,30 +2,40 @@
 
 A robust, enterprise-grade Issue Tracking REST API built with modern Java and Spring Boot. This application simulates the backend architecture of tools like Jira, managing workflows between QA Testers, Developers, and Project Managers.
 
+**🌍 Live API Documentation:** [https://mini-jira-backend-27ve.onrender.com/swagger-ui/index.html]
+
+> ⏳ **Cold Start Notice:** This application is deployed on Render's free tier. If the service has been inactive, it may take **50–60 seconds** to spin up the instance for the initial request. Once awake, subsequent requests will be lightning fast thanks to the Redis distributed caching!
+
 ## ⚙️ Tech Stack
-* **Core:** Java 26, Spring Boot 4.1.0
-* **Database:** PostgreSQL / Spring Data JPA (Hibernate)
+* **Core:** Java 26 (Virtual Threads), Spring Boot 4.1.0
+* **Database & Caching:** PostgreSQL / Spring Data JPA (Hibernate), Redis (Upstash)
+* **Messaging & Asynchronous Processing:** RabbitMQ
 * **Security:** Spring Security, JSON Web Tokens (JWT), BCrypt
+* **Cloud & DevOps:** Render (Deployment)
 * **Documentation:** OpenAPI 3.0 (Swagger)
 
 ## 🏗️ Architectural Highlights
+* **Event-Driven Processing:** Utilizes RabbitMQ for asynchronous background processing of system notifications and email triggers, effectively decoupling core services.
+* **High Concurrency & Low Latency:** Integrates Redis-based distributed caching and leverages Java Virtual Threads to optimize high-traffic request handling.
 * **Stateless Authentication:** Custom JWT Filter Chain prevents unauthorized access and spoofing by extracting user context directly from cryptographic tokens.
 * **Role-Based Access Control (RBAC):** Strict endpoint isolation. Only Admins can create projects and manage users; QAs can create tickets; Developers can update statuses. 
-* **Performance Optimization:** Utilizes Spring Data JPA `Slice` for highly efficient, infinite-scroll style data fetching without executing heavy `COUNT` queries.
+* **Performance Optimization & Auditing:** Utilizes Spring Data JPA `Slice` for highly efficient, infinite-scroll style data fetching without executing heavy `COUNT` queries, backed by robust database audit logging.
 * **Defensive Programming:** Implements strict DTO patterns to shield internal database entities from mass-assignment attacks, backed by global exception handling for clean HTTP responses.
 
 ## 📋 Prerequisites
-Before running the project, ensure you have the following installed on your machine:
+Before running the project locally, ensure you have the following installed:
 * **Java Development Kit (JDK) 26** or higher.
 * **Maven** (for building and running the application).
 * **PostgreSQL** server running locally (or via Docker) on port `5432`.
+* **Redis** server running locally (or via Docker).
+* **RabbitMQ** server running locally (or via Docker).
 * **Git** (to clone the repository).
 
 ## 🚀 How to Run Locally
 
 1. Clone the repository.
-2. Ensure you have a PostgreSQL database running locally.
-3. Update the `application-dev.yml` with your database credentials.
+2. Ensure you have PostgreSQL, Redis, and RabbitMQ running.
+3. Update the `application-dev.yml`with your PostgreSQL, Redis, and RabbitMQ credentials.
 4. Set the `JWT_SECRET` environment variable with a 256-bit secure key.
 5. Run the application via your IDE or `mvn spring-boot:run`.
 6. Navigate to `http://localhost:8080/swagger-ui/index.html` to view the interactive API documentation and test endpoints!
@@ -57,7 +67,7 @@ Before running the project, ensure you have the following installed on your mach
 
 ---
 
-### 3. Project Management[cite: 2]
+### 3. Project Management
 
 **1. Create Project** (`POST /projects`)
 
