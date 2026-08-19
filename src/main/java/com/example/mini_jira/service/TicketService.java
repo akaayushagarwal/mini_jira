@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.mini_jira.config.RabbitMQConfig;
-import com.example.mini_jira.dto.TicketNotificationEvent;
 import com.example.mini_jira.dto.TicketRequestDTO;
 import com.example.mini_jira.dto.TicketResponseDTO;
 import com.example.mini_jira.entity.ProjectEntity;
 import com.example.mini_jira.entity.TicketEntity;
 import com.example.mini_jira.entity.UserEntity;
+import com.example.mini_jira.event.TicketNotificationEvent;
 import com.example.mini_jira.exception.InvalidStatusException;
 import com.example.mini_jira.exception.ResourceNotFoundException;
 import com.example.mini_jira.repository.ProjectRepository;

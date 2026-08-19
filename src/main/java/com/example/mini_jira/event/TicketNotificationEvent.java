@@ -1,4 +1,4 @@
-package com.example.mini_jira.dto;
+package com.example.mini_jira.event;
 
 import com.example.mini_jira.entity.TicketEntity;
 

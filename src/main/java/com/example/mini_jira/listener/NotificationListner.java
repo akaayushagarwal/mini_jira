@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.example.mini_jira.config.RabbitMQConfig;
-import com.example.mini_jira.dto.TicketNotificationEvent;
+import com.example.mini_jira.event.TicketNotificationEvent;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
